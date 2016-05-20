@@ -72,7 +72,12 @@ int write_minutes_to_tlc(Adafruit_TLC5947 *tlc, int minutes,int seconds)
   int gap_sec = (modulo * 60)+seconds;
   if(gap_sec>150)
   {
-    pos++;  
+    pos++;
+    pos = pos % 12;
+    if(pos == 0)
+    {
+      hour_offset = 1;
+    }
   }
   switch(pos)
   {
@@ -89,7 +94,7 @@ int write_minutes_to_tlc(Adafruit_TLC5947 *tlc, int minutes,int seconds)
       break;
     case 3:
       tlc->setPWM(VIERTEL_MINUTES,brightness);
-      hour_offset = 1;
+      tlc->setPWM(NACH,brightness);
       break;
     case 4:
       tlc->setPWM(ZHEN_MINUTES,brightness);
